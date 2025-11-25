@@ -20,7 +20,10 @@ graph = StateGraph(ScrapeState)
 
 def scrape_step(state: ScrapeState) -> ScrapeState:
     url = state["url"]
-    result = app.scrape_url(url)
+
+    # OLD: result = app.scrape_url(url)
+    result = app.scrape(url=url)   # ✅ TO‘G‘RI METOD
+
     return {"url": url, "result": result}
 
 graph.add_node("scrape", scrape_step)
