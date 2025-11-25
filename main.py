@@ -1,5 +1,5 @@
 from firecrawl import FirecrawlApp
-from langgraph.graph import Graph
+from langgraph import StateGraph
 import os
 from dotenv import load_dotenv
 
