@@ -1,4 +1,4 @@
 firecrawl-py
 langchain
-langgraph
+langgraph==0.2.3
 python-dotenv
