@@ -28,6 +28,6 @@ graph.set_entry_point("scrape")
 
 agent = graph.compile()
 
-if name == "__main__":
+if __name__ == "__main__":
     response = agent.invoke({"url": "https://example.com", "result": None})
     print(response)
