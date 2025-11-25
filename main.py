@@ -1,22 +1,27 @@
 from firecrawl import FirecrawlApp
 from langgraph.graph import StateGraph
+from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
 
-# Load .env for local testing
+# Load .env
 load_dotenv()
 
-# API KEY
+# Firecrawl API key
 api_key = os.getenv("FIRECRAWL_API_KEY")
-
 app = FirecrawlApp(api_key=api_key)
 
-# Create graph
-graph = StateGraph()
+# --- STATE SCHEMA ---
+class ScrapeState(BaseModel):
+    url: str
+    result: dict | None = None
 
-def scrape_step(state):
-    url = state["url"]
-    result = app.scrape_url(url)
+# Graph yaratish
+graph = StateGraph(ScrapeState)
+
+# Scrape-step
+def scrape_step(state: ScrapeState):
+    result = app.scrape_url(state.url)
     return {"result": result}
 
 graph.add_node("scrape", scrape_step)
@@ -24,7 +29,7 @@ graph.set_entry_point("scrape")
 
 agent = graph.compile()
 
+# --- RUN ---
 if name == "__main__":
-    url = "https://example.com"
-    response = agent.invoke({"url": url})
+    response = agent.invoke({"url": "https://example.com"})
     print(response)
